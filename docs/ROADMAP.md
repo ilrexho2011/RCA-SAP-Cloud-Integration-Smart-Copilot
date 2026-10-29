@@ -2,7 +2,7 @@
 
 > **Version:** 0.1 (draft) · **Data:** 2026-08-25 · **Owner:** Ilirjan Rexho
 > **Stack i zgjedhur:** Backend **Python / FastAPI** · Frontend **React + TypeScript**
-> **Orkestrimi:** Multi-agent orchestrator + RAG grounding + AI4BIZ quality gates (i kombinuar)
+> **Orkestrimi:** Multi-agent orchestrator + RAG grounding + AI4CPI quality gates (i kombinuar)
 > **Qëllimi i fazës 1 (MVP):** Full platform (Dashboard, Generate, iFlows, Groovy, Monitor, Settings, Admin)
 
 Ky dokument është plani zyrtar që do të ndjek për të ndërtuar një version të përmirësuar të modelit "CPI Copilot", me fokus te **orkestrimi i qëndrueshëm i AI-së**, **grounding me RAG mbi njohuritë SAP CPI**, dhe **quality gates** që parandalojnë halucinacionet përpara se AI të prekë tenant-in e klientit.
