@@ -13,9 +13,9 @@ Ky dokument është plani zyrtar që do të ndjek për të ndërtuar një versio
 
 Aplikacioni model (`cpicopilot.com`) është një **AI co-pilot për SAP Cloud Integration (CPI / Integration Suite)** që mbulon gjashtë module: Dashboard, Generate (iFlow nga gjuha natyrale), iFlows (browse / Explain / Modify / Fix / Verify), Groovy (gjenerim skriptesh), Monitor (watch + AI root-cause + JMS queue health), dhe Settings/Admin (kredencialet OAuth, AI engine BYOK, email alerts, users/spend).
 
-Vlerësimi im: modeli është i fortë në **mbulim funksional**, por dobësia kryesore — dhe pikërisht aty ku ti do ta përmirësosh — është **orkestrimi**. Në modelin origjinal çdo veprim AI (Generate, Explain, Fix) duket si një thirrje e vetme LLM me pak grounding. Kjo prodhon dy rreziqe në SAP: (1) **halucinacione** në emra adaptera, mapping fields, endpoint URL, dhe (2) **veprime write të pakontrolluara** ndaj tenant-it prodhues.
+Vlerësimi im: modeli është i fortë në **mbulim funksional**, por dobësia kryesore — dhe pikërisht aty ku ti do ta përmirësosh — është **orkestrimi**. Në modelin origjinal çdo veprim AI (Generate, Explain, Fix) duket si një thirrje e vetme LLM me pak grounding. Kjo prodhon dy rreziqe në SAP: (1) **halucinacione** në emra adapterash, mapping fields, endpoint URL, dhe (2) **veprime write të pakontrolluara** ndaj tenant-it prodhues.
 
-Propozimi im e zgjidh këtë me tre shtresa: një **orchestrator me agjentë të specializuar** (state machine + tool-calling + human-in-the-loop), një **shtresë RAG** që ushqen çdo agjent me njohuri të qeverisura (KEDB, runbooks, iFlow patterns, adapter specs), dhe **quality gates AI4BIZ** që bllokojnë promovimin e artefakteve nën një threshold. Kjo e kthen "një chatbot që gjeneron XML" në një **platformë të qeverisur closed-loop**.
+Propozimi im e zgjidh këtë me tre shtresa: një **orchestrator me agjentë të specializuar** (state machine + tool-calling + human-in-the-loop), një **shtresë RAG** që ushqen çdo agjent me njohuri të qeverisura (KEDB, runbooks, iFlow patterns, adapter specs), dhe **quality gates AI4CPI** që bllokojnë promovimin e artefakteve nën një threshold. Kjo e kthen "një chatbot që gjeneron XML" në një **platformë të qeverisur closed-loop**.
 
 ---
 
@@ -41,7 +41,7 @@ Modeli origjinal ndan **design-time key** (CPI Connection) nga **runtime key** (
 
 1. **Mungon grounding i qeverisur.** Gjenerimi mbështetet te LLM knowledge, jo te patterns/adapter specs të verifikuara → RAG layer.
 2. **Orkestrim i cekët.** "Analyse and Plan → Generate" është linear; mungon retry/repair loop, tool-validation, dhe kontroll deterministik → orchestrator me state machine.
-3. **Nuk ka quality gate përpara write.** Asnjë benchmark/lint përpara se artefakti të shkojë në tenant → AI4BIZ quality gates + validim iFlow (XSD/schema).
+3. **Nuk ka quality gate përpara write.** Asnjë benchmark/lint përpara se artefakti të shkojë në tenant → AI4CPI quality gates + validim iFlow (XSD/schema).
 4. **Observability e AI-së.** Spend tracking ekziston, por mungon trace-i i plotë i çdo run-i (input, retrieved context, tool calls, cost, latency) → run history + tracing.
 5. **Human-in-the-loop i pjesshëm.** "Unlock before generating" është manual; mungon një approval workflow strukturor për veprimet write → HITL gate në orchestrator.
 
@@ -68,7 +68,7 @@ flowchart TB
         AGENTS["Specialized Agents:<br/>Generate · Explain · Fix · Groovy · Monitor · RAG-Retriever"]
         TOOLS["Tool Registry (SAP CPI API, validators, MPL, queue ops)"]
         HITL["Human-in-the-loop Gate"]
-        GATES["Quality Gates (AI4BIZ benchmark + iFlow lint)"]
+        GATES["Quality Gates (AI4CPI benchmark + iFlow lint)"]
     end
 
     subgraph Knowledge["RAG / Knowledge Plane"]
@@ -141,9 +141,9 @@ Parimet e orkestrimit që do të zbatojmë:
 
 ### 3.3 Grounding me RAG (pse rrit saktësinë)
 
-Ndjekim pipeline-in hybrid të AI4BIZ: normalizim query me ruajtje të fragmenteve literal (error strings), **BM25** mbi title/metadata/headings/body, **vector retrieval** mbi chunk body + metadata-enriched text, merge + rerank sipas fushave të pritura (error signature, object_name, interface_id, integration_flow_id, priority), dhe citime me document_id/section/chunk. Chunking është **heading-aware** për KEDB/runbooks (jo fixed-size për dokumente normative).
+Ndjekim pipeline-in hybrid të AI4CPI: normalizim query me ruajtje të fragmenteve literal (error strings), **BM25** mbi title/metadata/headings/body, **vector retrieval** mbi chunk body + metadata-enriched text, merge + rerank sipas fushave të pritura (error signature, object_name, interface_id, integration_flow_id, priority), dhe citime me document_id/section/chunk. Chunking është **heading-aware** për KEDB/runbooks (jo fixed-size për dokumente normative).
 
-### 3.4 Quality gates (AI4BIZ closed-loop)
+### 3.4 Quality gates (AI4CPI closed-loop)
 
 Përpara promovimit të një artefakti (ose knowledge package), aplikohen kategoritë me pesha: Ingestion Policy Compliance 20%, BM25 Authoring 15%, Chunking 15%, Retrieval Precision 20%, Retrieval Recall 15%, Answer Faithfulness 10%, Citation Accuracy 5%. Thresholds: ≥90 Enterprise Ready, 80–89 minor, 70–79 conditional, 60–69 needs remediation, <60 not ready. Platforma e vlerësimit **nuk e modifikon** dokumentin — prodhon **corrective feedback JSON**; regjenerimi bëhet në gjenerator vetëm pas aprovimit të përdoruesit.
 
@@ -169,7 +169,7 @@ app/
   workers/            # Celery/RQ: monitoring polls, benchmark runs, scheduled checks
 ```
 
-Këta kufij pasqyrojnë udhëzimet AI4BIZ (`document_loader`, `markdown_parser`, `policy_compliance_service`, `chunking_service`, `indexing_service`, `retrieval_benchmark_service`, `rag_evaluation_service`, `feedback_generator`, `report_generator`, `publishing_service`) të zgjeruar me orchestrator, agjentë, dhe connectors.
+Këta kufij pasqyrojnë udhëzimet AI4CPI (`document_loader`, `markdown_parser`, `policy_compliance_service`, `chunking_service`, `indexing_service`, `retrieval_benchmark_service`, `rag_evaluation_service`, `feedback_generator`, `report_generator`, `publishing_service`) të zgjeruar me orchestrator, agjentë, dhe connectors.
 
 ### 4.2 Modeli i të dhënave (PostgreSQL — baseline)
 
@@ -231,7 +231,7 @@ Monitoring polls, scheduled-flow miss detection, dhe benchmark runs janë long-r
 - **Streaming:** AI Assistant + Generate/Explain lexojnë SSE nga `/agent/*` dhe `/runs/{id}` për të treguar hapat e orchestrator-it live (Classify → Retrieve → Plan → Validate → Gate).
 - **HITL UX:** Design Brief me butona *Revise / Approve*; "Unlock before write" bëhet një modal approval strukturor me diff preview (para/pas) përpara deploy.
 - **Run trace viewer:** panel që tregon retrieved citations, tool calls, cost, latency — transparencë kundër halucinacioneve.
-- **Aksesueshmëri & i18n:** English default, German + Albanian të zgjedhshme (përputhet me AI4BIZ).
+- **Aksesueshmëri & i18n:** English default, German + Albanian të zgjedhshme (përputhet me AI4CPI).
 
 ---
 
@@ -253,7 +253,7 @@ gantt
     section Phase 4 — Monitor
     Watch, AI root-cause, JMS queues, scheduled miss :p4, after p2, 28d
     section Phase 5 — Quality gates
-    AI4BIZ benchmark + feedback + publish loop        :p5, after p3, 28d
+    AI4CPI benchmark + feedback + publish loop        :p5, after p3, 28d
     section Phase 6 — Fix/Verify + Hardening
     Runtime write, security audit, multi-tenant scale :p6, after p5, 28d
 ```
@@ -280,7 +280,7 @@ gantt
 |--------|----------|---------|
 | API | FastAPI + Pydantic v2 | Tipizim i fortë për tool schemas, async, SSE |
 | Orchestration | Kod deterministik (opsionale LangGraph) | Kontroll i kalimeve në kod, jo te LLM |
-| RAG | Qdrant + OpenSearch (BM25) | Hybrid retrieval sipas AI4BIZ |
+| RAG | Qdrant + OpenSearch (BM25) | Hybrid retrieval sipas AI4CPI |
 | DB | PostgreSQL + Alembic | Governance, run history, JSONB ku duhet |
 | Queue | Celery/RQ + Redis | Monitoring polls, benchmark runs |
 | Secrets | AES-256-GCM per-account / Vault | Përputhet me modelin origjinal, forcuar |
@@ -312,7 +312,7 @@ Ndarje design-time/runtime keys (write vetëm në Phase 6); read-only scope si d
 |--------|----------------------------|
 | `cpicopilot.com/app` (web fetch) | Modulet, funksionet, tekstet e UI, Settings/AI Engine, monitoring |
 | 7 screenshots (Dashboard, Generate, iFlows, Groovy, Monitor, Settings x2) | Konfirmim i layout-it, KPI, "Unlock before", queue actions, BYOK |
-| Skill `ai4biz-platform-context.md` | Closed-loop orchestration, three-platform ecosystem, shared contract |
+| Skill `ai4cpi-platform-context.md` | Closed-loop orchestration, three-platform ecosystem, shared contract |
 | Skill `python-data-ai-engineering.md` | Service boundaries, PostgreSQL baseline, vector design, hybrid retrieval, hallucination controls |
 | Vendimet e përdoruesit (AskUserQuestion) | Stack FastAPI+React, orkestrim i kombinuar, full-platform MVP, Markdown+diagrame |
 
