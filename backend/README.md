@@ -49,7 +49,7 @@ backend/app/
   connectors/
     base.py               connector protocol
     sap_cpi.py            live OData client (token, MPL, runtime artifacts)
-    demo_provider.py      bundled RCMO sample data
+    demo_provider.py      bundled RCA sample data
   models/schemas.py       response contracts
   security/crypto.py      AES-256-GCM secret handling
 ```
