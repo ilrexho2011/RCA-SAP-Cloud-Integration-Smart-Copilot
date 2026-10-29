@@ -1,0 +1,6 @@
+{
+  "provider": "openai",
+  "endpoint": "",
+  "model": "gpt-4o-mini",
+  "key_enc": "CiWpWgkZFdJAx/QaeGO/J87ZoFUDt+JmSdnoDnT9lKhUXOdq1YcL5STcPdwMvAa5bXspWmIkfGUxXOAdSJKzyk0hflZ+xlA1NePjkM2XPN1znNgt0QaAN5sfHVwbBnckaA95tnih/ELZ5U+OQVeQgzz4YgTnXqO2c6t7rnu8C5yTuRZ4aunHH9zKGr4zsETD8evqeQDaxTdS2kuCOsawsJpSrkfV/8lom5DfRMKcX+xUcKTYuJ2uxWfFFEvrKDye"
+}

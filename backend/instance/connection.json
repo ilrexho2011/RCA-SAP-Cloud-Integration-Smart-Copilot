@@ -1,0 +1,12 @@
+{
+  "base_url": "https://47f506eatrial.it-cpitrial03.cfapps.ap21.hana.ondemand.com",
+  "token_url": "https://47f506eatrial.authentication.ap21.hana.ondemand.com/oauth/token",
+  "client_id": "sb-30ffb28a-05a7-462f-b5cb-49afddbfac8f!b130557|it!b196",
+  "web_ide_url": "https://47f506eatrial.integrationsuite-trial.cfapps.ap21.hana.ondemand.com/",
+  "mode": "live",
+  "secret_enc": "BSF14DcZ2IBM9FfaMUuYyMwSfbU+Vw3oKYqwXodOLYIxcPJ04mzMEeA6VU+1IispTL5FmNeqBby1cdM4t5Vdx48s38ZufxOs/ntrUVydieBcSFrmjMhHxMq96v75+gPj7dgI9F48UFZ+oJkJbg==",
+  "rt_base_url": "https://47f506eatrial.it-cpitrial03.cfapps.ap21.hana.ondemand.com",
+  "rt_token_url": "https://47f506eatrial.authentication.ap21.hana.ondemand.com/oauth/token",
+  "rt_client_id": "sb-30ffb28a-05a7-462f-b5cb-49afddbfac8f!b130557|it!b196",
+  "rt_secret_enc": "6bEXrPEornF3THB7lmVdbG94pTd0uiTorWR+Yyb1moUAlGnJKa9SF78NZ6N4fWXwMaK0O7J2MgLXMkiTWiadz05v+6ODdf0cweZypayf3tC5+NCybPuDvfMUj0Vq+agRY/i6/lB6b9qtEaoWJA=="
+}
