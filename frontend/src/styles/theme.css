@@ -1,0 +1,118 @@
+/* ============================================================
+   RCA Smart Copilot for SAP CPI — Design Tokens
+   Theme: QDKEP "Control Room" (dark navy + RealCore lime)
+   Colors sampled directly from the QDKEP v16 screenshot.
+   ============================================================ */
+
+:root {
+  /* --- Surfaces (dark navy stack) --- */
+  --bg-deep:      #0a1019;  /* app backdrop, deepest */
+  --bg-base:      #111a28;  /* page + card background */
+  --bg-elevated:  #16202f;  /* hover / raised surfaces */
+  --bg-raised:    #1f2d3f;  /* active rows, popovers */
+
+  /* --- Borders --- */
+  --border:        #1f2d3f;
+  --border-strong: #2b3f57;
+  --border-focus:  #8cc63f;
+
+  /* --- Brand (RealCore Albania) --- */
+  --rca-lime:     #8cc63f;  /* primary accent — logo bright green */
+  --rca-green:    #6eaa4b;  /* logo secondary green */
+  --rca-lime-dim: rgba(140, 198, 63, 0.14);
+  --accent:       var(--rca-lime);
+  --accent-soft:  var(--rca-lime-dim);
+
+  /* --- Text --- */
+  --text-primary:   #eef3f8;
+  --text-secondary: #9fb0c3;
+  --text-muted:     #7f93a8;
+  --text-faint:     #566a80;
+
+  /* --- Status / KPI accents (from screenshot) --- */
+  --status-failed:    #fb7185;  /* red/pink — failed messages */
+  --status-success:   #34d399;  /* green — completed */
+  --status-watched:   #5aa0e6;  /* blue — systems watched */
+  --status-warn:      #f2c14e;  /* amber — error patterns / transient */
+  --status-failed-bg:  rgba(251, 113, 133, 0.12);
+  --status-success-bg: rgba(52, 211, 153, 0.12);
+  --status-watched-bg: rgba(90, 160, 230, 0.12);
+  --status-warn-bg:    rgba(242, 193, 78, 0.12);
+
+  /* --- Typography --- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", "Cascadia Code", monospace;
+
+  --fs-eyebrow: 11px;   /* uppercase tracked labels */
+  --fs-label:   11px;
+  --fs-body:    14px;
+  --fs-title:   28px;
+  --fs-kpi:     42px;
+  --tracking-wide: 0.14em;
+
+  /* --- Geometry --- */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* --- Effects --- */
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 24px rgba(0,0,0,0.25);
+  --gap: 20px;
+}
+
+/* ---- Base reset ---- */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Reusable primitives ---- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--rca-lime);
+  font-weight: 600;
+}
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.card {
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+}
+.pill--ok    { color: var(--status-success); border-color: rgba(52,211,153,.4); background: var(--status-success-bg); }
+.pill--warn  { color: var(--status-warn);    border-color: rgba(242,193,78,.4); background: var(--status-warn-bg); }
+.pill--fail  { color: var(--status-failed);  border-color: rgba(251,113,133,.4); background: var(--status-failed-bg); }
+.pill--info  { color: var(--status-watched); border-color: rgba(90,160,230,.4); background: var(--status-watched-bg); }
+
+.kpi-value { font-family: var(--font-mono); font-size: var(--fs-kpi); font-weight: 700; line-height: 1; }
+.status-tag {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--status-failed);
+}
