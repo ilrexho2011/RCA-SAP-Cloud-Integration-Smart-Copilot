@@ -1,6 +1,7 @@
 # RCA-SAP-Cloud-Integration-Smart-Copilot
 
 **Analysis, generation and management of integrations with AI Assistance**, across **SAP CPI, API Management (APIM) and Advanced Event Mesh (AEM)** — built by **RealCore Albania (RCA)**. The visual theme is dark + RCA lime ("Control Room"); the AI runs an **orchestrated, RAG-grounded, quality-gated** pipeline, not a single LLM call.
+
 <img width="1158" height="698" alt="image" src="https://github.com/user-attachments/assets/3e4d058a-c253-4be1-9782-2c34b0522b5a" />
 
 > Status: research/build preview. Backend (FastAPI) + frontend (React + TypeScript). Runs fully in **demo mode** with no SAP tenant and no LLM key; add a service key and an AI provider to go live.
@@ -23,6 +24,7 @@ Six modules, all functional:
 ## The orchestration idea
 
 Every AI action runs through a **deterministic state machine**; the LLM is invoked only *inside* steps. Control transitions live in code, so we get grounded retrieval, typed validation, a repair loop, human-in-the-loop gates before any write, and a full run trace. This is the core improvement over a plain "prompt → XML" copilot. See `docs/ROADMAP.md` for the architecture and diagrams.
+
 <img width="1327" height="875" alt="image" src="https://github.com/user-attachments/assets/d11db338-9533-4647-a812-7a4c66188673" />
 
 ---
