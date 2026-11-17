@@ -58,6 +58,8 @@ Open <http://localhost:5173>.
 
 ### Go live
 
+<img width="1881" height="776" alt="image" src="https://github.com/user-attachments/assets/7eb306ef-002f-46bd-9990-055d704546bd" />
+
 In the app, open **Settings** (four sections):
 
 - **CPI Connection** — paste your Integration Suite service key (url, tokenurl, clientid, clientsecret), Save, Test, then switch to live.
